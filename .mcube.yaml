@@ -1,0 +1,9 @@
+pkg: codeup.aliyun.com/baber/go/cmdb
+name: cmdb
+description: cmdb
+enable_keyauth: false
+enable_mysql: true
+enable_mongodb: false
+gen_example: true
+http_framework: go-restful
+enable_cache: false
