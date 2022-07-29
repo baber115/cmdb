@@ -1,0 +1,280 @@
+syntax = "proto3";
+
+package infraboard.cmdb.resource;
+option go_package = "codeup.aliyun.com/baber/go/cmdb/apps/resource";
+
+import "github.com/infraboard/mcube/pb/page/page.proto";
+
+service Service {
+  rpc Search (SearchRequest) returns (ResourceSet);
+  rpc QueryTag(QueryTagRequest) returns (TagSet);
+  rpc UpdateTag (UpdateTagRequest) returns (Resource);
+}
+
+message TagSelector {
+  // 匹配的key, 支持LIKE匹配
+  // @gotags: json:"key"
+  string key = 1;
+  // 匹配符
+  // @gotags: json:"opertor"
+  string opertor = 2;
+  // 匹配的值
+  // @gotags: json:"values"
+  repeated string values = 3;
+}
+
+message SearchRequest{
+  // 分页参数
+  // @gotags: json:"page"
+  infraboard.mcube.page.PageRequest page = 1;
+  // 资源所属域
+  // @gotags: json:"domain"
+  string domain = 2;
+  // 资源所属空间
+  // @gotags: json:"namespace"
+  string namespace = 3;
+  // 资源所属环境
+  // @gotags: json:"env"
+  string env = 4;
+  // 使用方式
+  // @gotags: json:"usage_mode"
+  optional UsageMode usage_mode = 5;
+  // 厂商
+  // @gotags: json:"vendor"
+  optional Vendor vendor = 6;
+  // 同步的账号
+  // @gotags: json:"sync_account"
+  string sync_account = 7;
+  // 资源类型
+  // @gotags: json:"type"
+  optional Type type = 8;
+  // 服务商中的状态
+  // @gotags: json:"status"
+  string status = 9;
+  // 资源标签
+  // @gotags: json:"tags"
+  repeated TagSelector tags = 10;
+  // 是否返回资源的标签
+  // @gotags: json:"with_tags"
+  bool with_tags = 11;
+  // 关键字参数
+  // @gotags: json:"keywords"
+  string keywords = 14;
+  // 是否精确匹配
+  // @gotags: json:"exact_match"
+  bool exact_match = 15;
+}
+
+message ResourceSet{
+  // @gotags: json:"total"
+  int64 total = 1;
+  // @gotags: json:"items"
+  repeated Resource items = 2;
+}
+
+message QueryTagRequest{
+  // 资源id
+  // @gotags: json:"resource_ids"
+  repeated string resource_ids = 1;
+}
+
+message TagSet{
+  // @gotags: json:"total"
+  int64 total = 1;
+  // @gotags: json:"items"
+  repeated Tag items = 2;
+}
+
+enum UpdateAction {
+  // 添加
+  ADD = 0;
+  // 移除
+  REMOVE = 1;
+}
+
+message UpdateTagRequest{
+  // 资源id
+  // @gotags: json:"id" validate:"required"
+  string id = 1;
+  // 资源id
+  // @gotags: json:"action"
+  UpdateAction action = 2;
+  // 需要添加的资源标签
+  // @gotags: json:"tags" validate:"required"
+  repeated Tag tags = 3;
+}
+
+message Resource{
+  // 资源元数据信息，固有信息
+  // @gotags: json:"base"
+  Base base = 1;
+  // 资源信息，可变信息
+  // @gotags: json:"information"
+  Information information = 2;
+}
+
+enum Vendor {
+  ALIYUN = 0;
+  TENCENT = 1;
+  HUAWEI = 2;
+  VSPHERE = 3;
+  AMAZON = 4;
+}
+
+enum Type {
+  HOST = 0;
+  RDS = 1;
+  REDIS = 2;
+  BUCKET = 3;
+  BILL = 99;
+}
+
+// 使用方式
+enum UsageMode {
+  // 共享使用
+  SHARED = 0;
+  // 独占使用
+  MONOPOLY = 1;
+}
+
+// 共享策略
+message SharedPolicy {
+  // 分享的维度
+  // @gotags: json:"tag_key"
+  string tag_key = 1;
+  // 分享给哪些值
+  // @gotags: json:"tag_values"
+  repeated string tag_values = 2;
+}
+
+message Base {
+  // 全局唯一Id, 直接使用个云商自己的Id
+  // @gotags: json:"id" validate:"required"
+  string id = 1;
+  // 同步时间
+  // @gotags: json:"sync_at"
+  int64 sync_at = 2;
+  // 用于同步的凭证ID
+  // @gotags: json:"credential_id"
+  string credential_id = 3;
+  // 厂商
+  // @gotags: json:"vendor"
+  Vendor vendor = 4;
+  // 资源类型
+  // @gotags: json:"resource_type"
+  Type resource_type = 5;
+  // 地域
+  // @gotags: json:"region"
+  string region = 6;
+  // 区域
+  // @gotags: json:"zone"
+  string zone = 7;
+  // 创建时间
+  // @gotags: json:"create_at"
+  int64  create_at = 8;
+  // 基础数据Hash
+  // @gotags: json:"resource_hash"
+  string resource_hash = 10;
+  // 描述数据Hash
+  // @gotags: json:"describe_hash"
+  string describe_hash = 11;
+  // Resource信息释放有变化
+  // @gotags: json:"resource_hash_changed,omitempty"
+  bool resource_hash_changed = 12;
+  // Describe信息释放有变化
+  // @gotags: json:"describe_hash_changed,omitempty"
+  bool describe_hash_changed = 13;
+  // 资源所属空间
+  // @gotags: json:"namespace"
+  string namespace = 14;
+  // 资源所属环境
+  // @gotags: json:"env"
+  string env = 15;
+  // 使用方式
+  // @gotags: json:"usage_mode"
+  UsageMode usage_mode = 16;
+  // 共享策略, 当一个资源被多个应用共享时, 可以指定允许的应用
+  // @gotags: json:"shared_policy"
+  SharedPolicy shared_policy = 17;
+  // 资源所属域
+  // @gotags: json:"domain"
+  string domain = 18;
+}
+
+message Information{
+  // 过期时间
+  // @gotags: json:"expire_at"
+  int64 expire_at = 1;
+  // 种类
+  // @gotags: json:"category"
+  string category = 2;
+  // 规格
+  // @gotags: json:"type"
+  string type = 3;
+  // 名称
+  // @gotags: json:"name"
+  string name = 4;
+  // 描述
+  // @gotags: json:"description"
+  string description = 5;
+  // 服务商中的状态
+  // @gotags: json:"status"
+  string status = 6;
+  // 标签
+  // @gotags: json:"tags"
+  repeated Tag tags = 7;
+  // 更新时间
+  // @gotags: json:"update_at"
+  int64 update_at = 8;
+  // 同步的账号
+  // @gotags: json:"sync_account"
+  string sync_account = 9;
+  // 公网IP, 或者域名
+  // @gotags: json:"public_ip"
+  repeated string public_ip = 10;
+  // 内网IP, 或者域名
+  // @gotags: json:"private_ip"
+  repeated string private_ip = 11;
+  // 实例付费方式
+  // @gotags: json:"pay_type"
+  string pay_type = 12;
+}
+
+enum TAG_TYPE {
+  // 用户自定义标签, 允许用户修改
+  USER = 0;
+  // 第三方定义的标签, 比如云商同步过来的标签
+  THIRD = 1;
+  // 系统使用标签, 禁止用户修改, 表示被其他系统引用, 比如应用关联标签
+  SYSTEM = 2;
+}
+
+message Tag {
+  // 标签属于的资源
+  // @gotags: json:"resource_id"
+  string resource_id = 1;
+  // 标签的类型
+  // @gotags: json:"type"
+  TAG_TYPE type = 2;
+  // 标签的Key
+  // @gotags: json:"key" validate:"lte=255,required"
+  string key = 3;
+  // 标签的值
+  // @gotags: json:"value" validate:"lte=255,required"
+  string value = 4;
+  // 标签的值的描述, 通常用于展示
+  // @gotags: json:"describe"
+  string describe = 5;
+  // 标签权重, 针对同一个key, 多个value场景, 默认值1
+  // @gotags: json:"weight"
+  int64 weight = 6;
+  // 标签是否纳入成本统计, 比如监控标签就不需要纳入到成本统计
+  // @gotags: json:"is_cost"
+  bool is_cost = 7;
+  // 标签是否隐藏, 用于控制是否在前端展示
+  // @gotags: json:"hidden"
+  bool hidden = 8;
+  // 标签meta信息, 比如前端需要设置标签的颜色
+  // @gotags: json:"meta"
+  map<string,string> meta = 15;
+}
