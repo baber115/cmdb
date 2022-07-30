@@ -2,7 +2,6 @@ package cvm_test
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	"codeup.aliyun.com/baber/go/cmdb/provider/txyun/connectivity"
@@ -34,5 +33,5 @@ func TestOperator(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(response)
+	t.Log(response)
 }

@@ -13,7 +13,7 @@ func (c *CVMOperator) Query(ctx context.Context, req *cvm.DescribeInstancesReque
 	if err != nil {
 		return nil, err
 	}
-	c.log.Debugf(response.ToJsonString())
+	set := c.transferSet(response.Response.InstanceSet)
 
-	return nil, nil
+	return set, nil
 }

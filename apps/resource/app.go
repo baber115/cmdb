@@ -214,3 +214,24 @@ func (i *Information) PrivateIPToString() string {
 func (i *Information) PublicIPToString() string {
 	return strings.Join(i.PublicIp, ",")
 }
+
+func NewThirdTag(key, value string) *Tag {
+	return &Tag{
+		Type:   TAG_TYPE_THIRD,
+		Key:    key,
+		Value:  value,
+		Weight: 1,
+	}
+}
+
+type AccountGetter struct {
+	accountId string
+}
+
+func (ag *AccountGetter) WithAccountId(id string) {
+	ag.accountId = id
+}
+
+func (ag *AccountGetter) GetAccountId() string {
+	return ag.accountId
+}
