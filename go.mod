@@ -3,22 +3,28 @@ module codeup.aliyun.com/baber/go/cmdb
 go 1.18
 
 require (
-	github.com/BurntSushi/toml v0.3.1
-	github.com/caarlos0/env/v6 v6.4.0
+	github.com/BurntSushi/toml v1.1.0
+	github.com/caarlos0/env/v6 v6.9.2
 	github.com/emicklei/go-restful-openapi v1.4.1
 	github.com/emicklei/go-restful-openapi/v2 v2.9.0
-	github.com/emicklei/go-restful/v3 v3.7.4
+	github.com/emicklei/go-restful/v3 v3.8.0
 	github.com/go-openapi/spec v0.20.6
-	github.com/go-playground/validator/v10 v10.10.0
+	github.com/go-playground/validator/v10 v10.11.0
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/imdario/mergo v0.3.13
-	github.com/infraboard/keyauth v0.7.8
+	github.com/infraboard/cmdb v0.0.0-20220729083607-927b52cecc21
+	github.com/infraboard/keyauth v0.8.1
 	github.com/infraboard/mcube v1.9.0
-	github.com/rs/xid v1.3.0
-	github.com/spf13/cobra v1.3.0
-	github.com/stretchr/testify v1.7.0
-	google.golang.org/grpc v1.44.0
-	google.golang.org/protobuf v1.27.1
+	github.com/rs/xid v1.4.0
+	github.com/spf13/cobra v1.4.0
+	github.com/stretchr/testify v1.7.1
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/billing v1.0.393
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cdb v1.0.393
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.451
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm v1.0.451
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sts v1.0.451
+	google.golang.org/grpc v1.46.2
+	google.golang.org/protobuf v1.28.0
 )
 
 require (
@@ -46,7 +52,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/ugorji/go/codec v1.2.6 // indirect
-	go.mongodb.org/mongo-driver v1.8.3 // indirect
+	go.mongodb.org/mongo-driver v1.9.1 // indirect
 	go.uber.org/atomic v1.7.0 // indirect
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.20.0 // indirect
