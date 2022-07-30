@@ -2,13 +2,13 @@ package api
 
 import (
 	restfulspec "github.com/emicklei/go-restful-openapi"
-	"github.com/emicklei/go-restful/v3"
 	"github.com/infraboard/mcube/app"
 	"github.com/infraboard/mcube/http/response"
 	"github.com/infraboard/mcube/logger"
 	"github.com/infraboard/mcube/logger/zap"
 
 	"codeup.aliyun.com/baber/go/cmdb/apps/book"
+	"github.com/emicklei/go-restful/v3"
 )
 
 var (
