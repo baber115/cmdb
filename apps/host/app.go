@@ -188,7 +188,7 @@ func (req *UpdateHostRequest) Validate() error {
 
 // 分页器
 type Pagger interface {
-	Next() bool
+	HasNext() bool
 	Scan(context.Context, *HostSet) error
 	SetPageSize(int64)
 }

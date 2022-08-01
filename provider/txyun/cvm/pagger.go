@@ -42,7 +42,7 @@ func (p *pagger) SetPageSize(pageSize int64) {
 }
 
 // 判断是否有下一页
-func (p *pagger) Next() bool {
+func (p *pagger) HasNext() bool {
 	return p.hasNext
 }
 
@@ -56,21 +56,27 @@ func (p *pagger) offset() *int64 {
 // 修改req，执行真正的下一页的offset
 func (p *pagger) nextReq() *tx_cvm.DescribeInstancesRequest {
 	p.req.Offset = p.offset()
-	// 修改指针到下一页
-	p.pageNumber++
+	p.req.Limit = &p.pageSize
 
 	return p.req
 }
 
 func (p *pagger) Scan(ctx context.Context, h *host.HostSet) error {
 	p.log.Debugf("p.pageNummber = %d", p.pageNumber)
-	hostSet, err := p.op.Query(ctx, p.nextReq())
+	response, err := p.op.Query(ctx, p.nextReq())
 	if err != nil {
 		return err
 	}
-	if hostSet.Length() < p.pageSize {
+	if response.Length() < p.pageSize {
 		p.hasNext = false
 	}
+	// 把查询出来的数据clone给hostSet
+	for i := range response.Items {
+		h.Add(response.Items[i])
+	}
+
+	// 修改指针到下一页
+	p.pageNumber++
 
 	return nil
 }

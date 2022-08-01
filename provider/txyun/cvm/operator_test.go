@@ -39,12 +39,12 @@ func TestOperator(t *testing.T) {
 
 func TestPagger(t *testing.T) {
 	page := cvm.NewPagger(operator)
-	for page.Next() {
+	for page.HasNext() {
 		set := host.NewHostSet()
 		err := page.Scan(context.Background(), set)
 		if err != nil {
 			panic(err)
 		}
-		t.Log(set)
+		t.Log("page query result: ", set)
 	}
 }
