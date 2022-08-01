@@ -42,7 +42,7 @@ func LoadClientFromEnv() error {
 	if err := env.Parse(client); err != nil {
 		return err
 	}
-
+	fmt.Println(client)
 	return nil
 }
 
