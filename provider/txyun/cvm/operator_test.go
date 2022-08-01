@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	"codeup.aliyun.com/baber/go/cmdb/apps/host"
 	"codeup.aliyun.com/baber/go/cmdb/provider/txyun/connectivity"
 	"codeup.aliyun.com/baber/go/cmdb/provider/txyun/cvm"
 	"github.com/infraboard/mcube/logger/zap"
@@ -34,4 +35,16 @@ func TestOperator(t *testing.T) {
 		panic(err)
 	}
 	t.Log(response)
+}
+
+func TestPagger(t *testing.T) {
+	page := cvm.NewPagger(operator)
+	for page.Next() {
+		set := host.NewHostSet()
+		err := page.Scan(context.Background(), set)
+		if err != nil {
+			panic(err)
+		}
+		t.Log(set)
+	}
 }

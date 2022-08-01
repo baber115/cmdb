@@ -1,6 +1,7 @@
 package host
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 	"strings"
@@ -138,6 +139,10 @@ func (s *HostSet) Add(items ...any) {
 	}
 }
 
+func (s *HostSet) Length() int64 {
+	return int64(len(s.Items))
+}
+
 func NewUpdateHostDataByIns(ins *Host) *UpdateHostData {
 	return &UpdateHostData{
 		Information: ins.Information,
@@ -179,4 +184,11 @@ func NewUpdateHostRequest(id string) *UpdateHostRequest {
 
 func (req *UpdateHostRequest) Validate() error {
 	return validate.Struct(req)
+}
+
+// 分页器
+type Pagger interface {
+	Next() bool
+	Scan(context.Context, *HostSet) error
+	SetPageSize(int64)
 }
