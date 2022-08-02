@@ -5,13 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	"codeup.aliyun.com/baber/go/cmdb/apps/host"
 	"codeup.aliyun.com/baber/go/cmdb/apps/resource"
 	"codeup.aliyun.com/baber/go/cmdb/apps/secret"
 	"codeup.aliyun.com/baber/go/cmdb/apps/task"
 	"codeup.aliyun.com/baber/go/cmdb/conf"
-	"codeup.aliyun.com/baber/go/cmdb/provider/txyun/connectivity"
-	"codeup.aliyun.com/baber/go/cmdb/provider/txyun/cvm"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -45,28 +42,6 @@ func (i *impl) CreateTask(ctx context.Context, req *task.CreateTaskRequst) (*tas
 			// 操作那种资源:
 			switch req.ResourceType {
 			case resource.Type_HOST:
-				// 只实现主机同步, 初始化腾讯cvm operator
-				// NewTencentCloudClient client
-				txConn := connectivity.NewTencentCloudClient(s.Data.ApiKey, s.Data.ApiSecret, req.Region)
-				cvmOp := cvm.NewCVMOperator(txConn.CvmClient())
-
-				// 因为要同步所有资源，需要分页查询
-				pagger := cvm.NewPagger(cvmOp)
-				for pagger.HasNext() {
-					set := host.NewHostSet()
-					// 查询分页有错误立即返回
-					if err := pagger.Scan(ctx, set); err != nil {
-						return nil, err
-					}
-					// 保持该页数据, 同步时间时, 记录下日志
-					for index := range set.Items {
-						_, err := i.host.SyncHost(ctx, set.Items[index])
-						if err != nil {
-							i.log.Errorf("sync host error, %s", err)
-							continue
-						}
-					}
-				}
 				// 直接使用goroutine 把最耗时的逻辑
 				// ctx 是不是传递Http 的ctx
 				taskExecCtx, cancel := context.WithTimeout(
