@@ -310,6 +310,8 @@ github.com/infraboard/cmdb v0.0.0-20220729083607-927b52cecc21 h1:KqneVry5YTwr8jz
 github.com/infraboard/cmdb v0.0.0-20220729083607-927b52cecc21/go.mod h1:PVjRQfRCs5176ptitkzCqh380TaHz7NnvStyB2FMqqc=
 github.com/infraboard/keyauth v0.8.1 h1:DEOTqcu2/BjauVILDKK0rECPdXXTOr5HakTZ6Bdxqik=
 github.com/infraboard/keyauth v0.8.1/go.mod h1:vt7S1SMZTPy4aD/kYIvpQKh8gL8iRHdleB9lqfZUyKY=
+github.com/infraboard/mcenter v0.0.5 h1:C3fDhaIe0Dt8UYplMObMslByio7/C1ea7niluU6vqMk=
+github.com/infraboard/mcenter v0.0.5/go.mod h1:cJoDYV1ZhA9tatnLXvAXj0XxvC0Q5+CLOcXRF8i06xU=
 github.com/infraboard/mcube v1.8.11/go.mod h1:2z/ARQRRgITOZGAO7FFRcQCOOZTJBJixRb6vINzGE6Y=
 github.com/infraboard/mcube v1.9.0 h1:a2qtMHP68sEwHRf6Emq3FC679WGlb/od+68AeDbjyZ8=
 github.com/infraboard/mcube v1.9.0/go.mod h1:2z/ARQRRgITOZGAO7FFRcQCOOZTJBJixRb6vINzGE6Y=

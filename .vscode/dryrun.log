@@ -1,7 +1,0 @@
-make.exe --dry-run --always-make --keep-going --print-directory
-make.exe: Entering directory 'e:/go_project/src/cmdb'
-go mod tidy
- 
-go build -a -o dist/ -ldflags "-s -w" -ldflags "-X '""codeup.aliyun.com/baber/go/cmdb"/version".GIT_BRANCH=master' -X '""codeup.aliyun.com/baber/go/cmdb"/version".GIT_COMMIT=72f4e364e52ce065c3464bfefd53c102fbc809bb' -X '""codeup.aliyun.com/baber/go/cmdb"/version".BUILD_TIME=2022-08-01 12:42:59' -X '""codeup.aliyun.com/baber/go/cmdb"/version".GO_VERSION=go1.18.2 windows/amd64'" 
-make.exe: Leaving directory 'e:/go_project/src/cmdb'
- 

@@ -7,7 +7,6 @@
 package resource
 
 import (
-	"codeup.aliyun.com/baber/go/cmdb/utils"
 	request "github.com/infraboard/mcube/http/request"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -1120,10 +1119,6 @@ type Information struct {
 	// 实例付费方式
 	// @gotags: json:"pay_type"
 	PayType string `protobuf:"bytes,12,opt,name=pay_type,json=payType,proto3" json:"pay_type"`
-}
-
-func (x *Information) Hash()string {
-	return utils.Hash(x)
 }
 
 func (x *Information) Reset() {

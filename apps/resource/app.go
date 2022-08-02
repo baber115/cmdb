@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/infraboard/cmdb/utils"
 	"github.com/infraboard/mcube/http/request"
 )
 
@@ -234,4 +235,8 @@ func (ag *AccountGetter) WithAccountId(id string) {
 
 func (ag *AccountGetter) GetAccountId() string {
 	return ag.accountId
+}
+
+func (i *Information) Hash() string {
+	return utils.Hash(i)
 }

@@ -5,4 +5,5 @@ import (
 	_ "codeup.aliyun.com/baber/go/cmdb/apps/book/impl"
 	_ "codeup.aliyun.com/baber/go/cmdb/apps/host/impl"
 	_ "codeup.aliyun.com/baber/go/cmdb/apps/resource/impl"
+	_ "codeup.aliyun.com/baber/go/cmdb/apps/secret/impl"
 )

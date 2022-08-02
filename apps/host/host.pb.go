@@ -552,13 +552,6 @@ type DescribeHostRequest struct {
 	Value string `protobuf:"bytes,2,opt,name=value,proto3" json:"value" validate:"required"`
 }
 
-func (x *DescribeHostRequest)Where()(string,interface{}){
-	switch x.DescribeBy {
-	default:
-		return "r.id = ?",x.Value
-	}
-}
-
 func (x *DescribeHostRequest) Reset() {
 	*x = DescribeHostRequest{}
 	if protoimpl.UnsafeEnabled {

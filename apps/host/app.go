@@ -192,3 +192,10 @@ type Pagger interface {
 	Scan(context.Context, *HostSet) error
 	SetPageSize(int64)
 }
+
+func (req *DescribeHostRequest) Where() (string, interface{}) {
+	switch req.DescribeBy {
+	default:
+		return "r.id = ?", req.Value
+	}
+}
