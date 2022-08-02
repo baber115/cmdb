@@ -6,4 +6,5 @@ import (
 	_ "codeup.aliyun.com/baber/go/cmdb/apps/host/api"
 	_ "codeup.aliyun.com/baber/go/cmdb/apps/resource/api"
 	_ "codeup.aliyun.com/baber/go/cmdb/apps/secret/api"
+	_ "codeup.aliyun.com/baber/go/cmdb/apps/task/api"
 )

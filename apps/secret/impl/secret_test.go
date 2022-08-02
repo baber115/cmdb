@@ -18,6 +18,23 @@ var (
 	encryptKey = "abc"
 )
 
+func init() {
+	// 通过环境变量加载测试配置
+	if err := conf.LoadConfigFromEnv(); err != nil {
+		panic(err)
+	}
+
+	// 全局日志对象初始化
+	zap.DevelopmentSetup()
+
+	// 初始化所有实例
+	if err := app.InitAllApp(); err != nil {
+		panic(err)
+	}
+
+	ins = app.GetGrpcApp(secret.AppName).(secret.ServiceServer)
+}
+
 func TestSecretEncrypt(t *testing.T) {
 	ins := secret.NewDefaultSecret()
 	ins.Data.ApiSecret = "123456"
@@ -54,21 +71,4 @@ func TestCreateSecret(t *testing.T) {
 		t.Fatal(err)
 	}
 	t.Log(ss)
-}
-
-func init() {
-	// 通过环境变量加载测试配置
-	if err := conf.LoadConfigFromEnv(); err != nil {
-		panic(err)
-	}
-
-	// 全局日志对象初始化
-	zap.DevelopmentSetup()
-
-	// 初始化所有实例
-	if err := app.InitAllApp(); err != nil {
-		panic(err)
-	}
-
-	ins = app.GetGrpcApp(secret.AppName).(secret.ServiceServer)
 }
