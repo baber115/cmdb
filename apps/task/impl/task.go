@@ -43,13 +43,12 @@ func (i *impl) CreateTask(ctx context.Context, req *task.CreateTaskRequst) (*tas
 			switch req.ResourceType {
 			case resource.Type_HOST:
 				// 直接使用goroutine 把最耗时的逻辑
-				// ctx 是不是传递Http 的ctx
 				taskExecCtx, cancel := context.WithTimeout(
 					context.Background(),
 					time.Duration(req.Timeout)*time.Second,
 				)
 				taskCancel = cancel
-
+				// 这里不能用ctx，ctx是请求的上下文，如果传给goroutine的话，请求结束时goroutine也会结束
 				go i.syncHost(taskExecCtx, newSyncHostRequest(s, t))
 			case resource.Type_RDS:
 			case resource.Type_BILL:

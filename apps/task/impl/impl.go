@@ -36,7 +36,8 @@ func (s *impl) Config() error {
 	s.log = zap.L().Named(s.Name())
 	s.db = db
 
-	// 通过mock 来解耦以来 s.secret = &secretMock{}
+	// 开发过程中，可能secret是其他同事负责，我们为了模块之前解耦，可以先定义一个secretMock，完成task的开发，等secret模块完成后替换成secret
+	//s.secret = &secretMock{}
 	s.secret = app.GetGrpcApp(secret.AppName).(secret.ServiceServer)
 	s.host = app.GetGrpcApp(host.AppName).(host.ServiceServer)
 	return nil
