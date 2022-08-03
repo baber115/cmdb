@@ -3,6 +3,7 @@ package cvm_test
 import (
 	"context"
 	"testing"
+	"time"
 
 	"codeup.aliyun.com/baber/go/cmdb/apps/host"
 	"codeup.aliyun.com/baber/go/cmdb/provider/txyun/connectivity"
@@ -39,6 +40,19 @@ func TestOperator(t *testing.T) {
 
 func TestPagger(t *testing.T) {
 	page := cvm.NewPagger(operator)
+	for page.HasNext() {
+		set := host.NewHostSet()
+		err := page.Scan(context.Background(), set)
+		if err != nil {
+			panic(err)
+		}
+		t.Log("page query result: ", set)
+	}
+}
+
+func TestPaggerV2(t *testing.T) {
+	page := cvm.NewPagerV2(operator)
+	page.SetRate(float64(time.Second * 10))
 	for page.HasNext() {
 		set := host.NewHostSet()
 		err := page.Scan(context.Background(), set)
