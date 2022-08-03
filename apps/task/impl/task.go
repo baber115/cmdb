@@ -9,6 +9,8 @@ import (
 	"codeup.aliyun.com/baber/go/cmdb/apps/secret"
 	"codeup.aliyun.com/baber/go/cmdb/apps/task"
 	"codeup.aliyun.com/baber/go/cmdb/conf"
+	"github.com/infraboard/mcube/exception"
+	"github.com/infraboard/mcube/sqlbuilder"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -83,8 +85,44 @@ func (i *impl) CreateTask(ctx context.Context, req *task.CreateTaskRequst) (*tas
 	return t, nil
 }
 func (i *impl) QueryTask(ctx context.Context, req *task.QueryTaskRequest) (*task.TaskSet, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method QueryTask not implemented")
+	query := sqlbuilder.NewQuery(queryTaskSQL)
+
+	sql, args := query.Limit(req.Page.ComputeOffset(), uint(req.Page.PageSize)).BuildQuery()
+	i.log.Debugf("sql: %s, args: %v", sql, args)
+
+	stmt, err := i.db.PrepareContext(ctx, sql)
+	if err != nil {
+		return nil, exception.NewInternalServerError("prepare query task error, %s", err.Error())
+	}
+	defer stmt.Close()
+	rows, err := stmt.QueryContext(ctx, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	taskSet := task.NewTaskSet()
+	for rows.Next() {
+		t := task.NewDefaultTask()
+
+		/*
+			报错：sql: Scan error on column index 4, name "secret_desc": converting driver.Value type []uint8 ("测试用例") to a int64: inv    alid syntax
+			注意字段顺序，需要和数据库的保持一致
+		*/
+		err = rows.Scan(
+			&t.Id, &t.Data.Region, &t.Data.ResourceType, &t.Data.SecretId, &t.SecretDescription, &t.Data.Timeout,
+			&t.Status.Stage, &t.Status.Message, &t.Status.StartAt, &t.Status.EndAt,
+			&t.Status.TotalSucceed, &t.Status.TotalFailed,
+		)
+		if err != nil {
+			return nil, status.Errorf(codes.Unimplemented, "method QueryTask not implemented")
+		}
+		taskSet.Add(t)
+	}
+
+	return taskSet, nil
 }
+
 func (i *impl) DescribeTask(ctx context.Context, req *task.DescribeTaskRequest) (*task.Task, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DescribeTask not implemented")
 }

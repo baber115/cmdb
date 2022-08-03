@@ -45,3 +45,12 @@ func TestCreateTask(t *testing.T) {
 	}
 	t.Log(taskIns)
 }
+
+func TestQueryTask(t *testing.T) {
+	req := task.NewQueryTaskRequest()
+	taskIns, err := ins.QueryTask(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(taskIns)
+}

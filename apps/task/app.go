@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/infraboard/mcube/http/request"
 	"github.com/rs/xid"
 )
 
@@ -23,6 +24,12 @@ func NewCreateTaskRequst() *CreateTaskRequst {
 	}
 }
 
+func NewQueryTaskRequest() *QueryTaskRequest {
+	return &QueryTaskRequest{
+		Page: request.NewDefaultPageRequest(),
+	}
+}
+
 func (req *CreateTaskRequst) Validate() error {
 	return validate.Struct(req)
 }
@@ -37,6 +44,12 @@ func CreateTask(req *CreateTaskRequst) (*Task, error) {
 	ins.Id = xid.New().String()
 
 	return ins, nil
+}
+
+func NewTaskSet() *TaskSet {
+	return &TaskSet{
+		Items: []*Task{},
+	}
 }
 
 func NewDefaultTask() *Task {
@@ -60,4 +73,8 @@ func (s *Task) Failed(message string) {
 func (s *Task) Success() {
 	s.Status.EndAt = time.Now().UnixMilli()
 	s.Status.Stage = Stage_SUCCESS
+}
+
+func (set *TaskSet) Add(item *Task) {
+	set.Items = append(set.Items, item)
 }
